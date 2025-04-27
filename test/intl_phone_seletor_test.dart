@@ -1,7 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:intl_phone_seletor/intl_phone_selector.dart';
-
 void main() {
   test('adds one to input values', () {
     // final calculator = Calculator();
