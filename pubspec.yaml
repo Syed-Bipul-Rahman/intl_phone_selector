@@ -1,7 +1,7 @@
 name: intl_phone_selector
-description: "Highly customizable international phone number selector."
+description: "A highly customizable international phone number input package for Flutter."
 version: 0.0.1
-homepage:
+homepage: https://github.com/Syed-Bipul-Rahman/intl_phone_selector
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
