@@ -1,6 +1,8 @@
 # intl_phone_selector
 
-A highly customizable international phone number selector for Flutter applications. This package provides the core functionality for international phone number input fields while giving developers complete freedom to customize the UI according to their design requirements.
+A highly customizable international phone number selector for Flutter applications. This package
+provides the core functionality for international phone number input fields while giving developers
+complete freedom to customize the UI according to their design requirements.
 
 [![Pub Version](https://img.shields.io/pub/v/intl_phone_selector.svg)](https://pub.dev/packages/intl_phone_selector)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -99,7 +101,8 @@ class _PhoneInputExampleState extends State<PhoneInputExample> {
 
 ### Custom Implementation
 
-The real power of this package is that you can fully customize the UI while still using the core functionality:
+The real power of this package is that you can fully customize the UI while still using the core
+functionality:
 
 ```dart
 Widget _buildCustomPhoneInput() {
@@ -166,6 +169,7 @@ Widget _buildCustomPhoneInput() {
 The core controller class that manages phone number input, country selection, and validation.
 
 ```dart
+
 final controller = PhoneNumberController();
 
 // Get the complete phone number with country code
@@ -175,7 +179,9 @@ String completeNumber = controller.completeNumber;
 bool isValid = controller.isValid();
 
 // Change country
-controller.setCountry(newCountry);
+controller.setCountry
+(
+newCountry);
 
 // Don't forget to dispose
 @override
@@ -190,6 +196,7 @@ super.dispose();
 A model class that represents country data with dial code and flag.
 
 ```dart
+
 Country myCountry = Country(
   name: 'United States',
   code: 'US',
@@ -203,7 +210,8 @@ Country myCountry = Country(
 A ready-to-use phone input widget that provides basic functionality.
 
 ```dart
-BasicPhoneInput(
+BasicPhoneInput
+(
 controller: controller,
 decoration: InputDecoration(
 hintText: 'Enter phone number',
@@ -240,7 +248,8 @@ Country india = CountriesData.getCountryByDialCode('+91');
 
 ### Phone Number Formatting
 
-The package automatically formats phone numbers based on the selected country's standards. You can customize this behavior by modifying the `PhoneNumberFormatter` class:
+The package automatically formats phone numbers based on the selected country's standards. You can
+customize this behavior by modifying the `PhoneNumberFormatter` class:
 
 ```dart
 class MyCustomFormatter extends PhoneNumberFormatter {
@@ -295,13 +304,13 @@ List<Country> myCustomCountries = [
 
 ## Complete Example
 
-For a complete example with custom UI, country picker, and validation, see the [example app](example/lib/main.dart).
+For a complete example with custom UI, country picker, and validation, see
+the [example app](example/lib/main.dart).
 
 ## Contribution
 
 Contributions are welcome! If you find a bug or want a feature, please open an issue or submit a PR.
 
-[//]: # (## License)
+## License
 
-[//]: # ()
-[//]: # (This project is licensed under the MIT License - see the [LICENSE]&#40;LICENSE&#41; file for details.)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
