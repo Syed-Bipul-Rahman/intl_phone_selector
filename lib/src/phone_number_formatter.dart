@@ -1,6 +1,6 @@
 class PhoneNumberFormatter {
   String format(String text, String countryCode) {
-    final digitsOnly = text.replaceAll(RegExp(r'[^\d]'), '');
+    final digitsOnly = text.replaceAll(RegExp(r'\D'), '');
 
     switch (countryCode) {
       case 'US':
@@ -198,8 +198,9 @@ class PhoneNumberFormatter {
     // Format: (XXX) XXX-XXXX
     if (digitsOnly.isEmpty) return '';
     if (digitsOnly.length < 4) return digitsOnly;
-    if (digitsOnly.length < 7)
+    if (digitsOnly.length < 7) {
       return '(${digitsOnly.substring(0, 3)}) ${digitsOnly.substring(3)}';
+    }
     return '(${digitsOnly.substring(0, 3)}) ${digitsOnly.substring(3, 6)}-${digitsOnly.substring(6, digitsOnly.length.clamp(0, 10))}';
   }
 
@@ -214,8 +215,9 @@ class PhoneNumberFormatter {
     // Format: XXX XXX XXX
     if (digitsOnly.isEmpty) return '';
     if (digitsOnly.length < 4) return digitsOnly;
-    if (digitsOnly.length < 7)
+    if (digitsOnly.length < 7) {
       return '${digitsOnly.substring(0, 3)} ${digitsOnly.substring(3)}';
+    }
     return '${digitsOnly.substring(0, 3)} ${digitsOnly.substring(3, 6)} ${digitsOnly.substring(6, digitsOnly.length.clamp(0, 9))}';
   }
 
@@ -230,8 +232,9 @@ class PhoneNumberFormatter {
     // Format: XXXX XXX XXXX
     if (digitsOnly.isEmpty) return '';
     if (digitsOnly.length < 5) return digitsOnly;
-    if (digitsOnly.length < 8)
+    if (digitsOnly.length < 8) {
       return '${digitsOnly.substring(0, 4)} ${digitsOnly.substring(4)}';
+    }
     return '${digitsOnly.substring(0, 4)} ${digitsOnly.substring(4, 7)} ${digitsOnly.substring(7, digitsOnly.length.clamp(0, 11))}';
   }
 
@@ -260,10 +263,12 @@ class PhoneNumberFormatter {
     // Format: XX XX XX XX
     if (digitsOnly.isEmpty) return '';
     if (digitsOnly.length < 3) return digitsOnly;
-    if (digitsOnly.length < 5)
+    if (digitsOnly.length < 5) {
       return '${digitsOnly.substring(0, 2)} ${digitsOnly.substring(2)}';
-    if (digitsOnly.length < 7)
+    }
+    if (digitsOnly.length < 7) {
       return '${digitsOnly.substring(0, 2)} ${digitsOnly.substring(2, 4)} ${digitsOnly.substring(4)}';
+    }
     return '${digitsOnly.substring(0, 2)} ${digitsOnly.substring(2, 4)} ${digitsOnly.substring(4, 6)} ${digitsOnly.substring(6, digitsOnly.length.clamp(0, 8))}';
   }
 

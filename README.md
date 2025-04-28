@@ -19,7 +19,7 @@ complete freedom to customize the UI according to their design requirements.
 
 ## Screenshots
 
-<div style="display: flex; gap: 10px;">
+<div style="display: flex; gap: 20px;">
   <img src="screenshots/basic_implementation.png" alt="Basic Implementation" style="width: 250px; height: auto;">
   <img src="screenshots/country_picker.png" alt="Country Picker" style="width: 250px; height: auto;">
   <img src="screenshots/custom_implementation.png" alt="Custom Implementation" style="width: 250px; height: auto;">
@@ -181,9 +181,7 @@ String completeNumber = controller.completeNumber;
 bool isValid = controller.isValid();
 
 // Change country
-controller.setCountry
-(
-newCountry);
+controller.setCountry(newCountry);
 
 // Don't forget to dispose
 @override

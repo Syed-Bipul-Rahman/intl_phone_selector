@@ -2,6 +2,10 @@
 
 All notable changes to the `intl_phone_selector` package will be documented in this file.
 
+## [0.0.2] - 2025-04-28
+- Fix minor changes to improve `PhoneNumberFormatter`
+- Improved documentation.
+
 ## [0.0.1] - 2025-04-27
 
 ### Initial Release
