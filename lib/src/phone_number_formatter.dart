@@ -17,7 +17,7 @@ class PhoneNumberFormatter {
       case 'VC':
       case 'TT':
         return _formatNorthAmerican(digitsOnly);
-      // case 'IN':
+      case 'IN':
       case 'BD':
       case 'EG':
       case 'IQ':
@@ -40,6 +40,7 @@ class PhoneNumberFormatter {
         return _formatTenDigit(digitsOnly);
       case 'GB':
       case 'IE':
+      case 'IL':
       case 'AU':
       case 'NZ':
       case 'MY':

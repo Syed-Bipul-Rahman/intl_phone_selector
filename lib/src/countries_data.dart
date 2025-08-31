@@ -162,12 +162,12 @@ class CountriesData {
     Country(name: 'Honduras', code: 'HN', dialCode: '+504', flagEmoji: '🇭🇳'),
     Country(name: 'Hungary', code: 'HU', dialCode: '+36', flagEmoji: '🇭🇺'),
     Country(name: 'Iceland', code: 'IS', dialCode: '+354', flagEmoji: '🇮🇸'),
-    // Country(name: 'India', code: 'IN', dialCode: '+91', flagEmoji: '🇮🇳'),
+    Country(name: 'India', code: 'IN', dialCode: '+91', flagEmoji: '🇮🇳'),
     Country(name: 'Indonesia', code: 'ID', dialCode: '+62', flagEmoji: '🇮🇩'),
     Country(name: 'Iran', code: 'IR', dialCode: '+98', flagEmoji: '🇮🇷'),
     Country(name: 'Iraq', code: 'IQ', dialCode: '+964', flagEmoji: '🇮🇶'),
     Country(name: 'Ireland', code: 'IE', dialCode: '+353', flagEmoji: '🇮🇪'),
-    // Country(name: 'Israel', code: 'IL', dialCode: '+972', flagEmoji: '🇮🇱'),
+    Country(name: 'Israel', code: 'IL', dialCode: '+972', flagEmoji: '🇮🇱'),
     Country(name: 'Italy', code: 'IT', dialCode: '+39', flagEmoji: '🇮🇹'),
     Country(name: 'Jamaica', code: 'JM', dialCode: '+1-876', flagEmoji: '🇯🇲'),
     Country(name: 'Japan', code: 'JP', dialCode: '+81', flagEmoji: '🇯🇵'),
@@ -464,16 +464,77 @@ class CountriesData {
   ];
 
   static Country getCountryByCode(String code) {
-    return allCountries.firstWhere(
-      (country) => country.code == code,
-      orElse: () => allCountries.first,
-    );
+    try {
+      if (code.isEmpty) return _getFallbackCountry();
+      
+      return allCountries.firstWhere(
+        (country) => country.code.toUpperCase() == code.toUpperCase(),
+        orElse: () => _getFallbackCountry(),
+      );
+    } catch (e) {
+      return _getFallbackCountry();
+    }
   }
 
   static Country getCountryByDialCode(String dialCode) {
-    return allCountries.firstWhere(
-      (country) => country.dialCode == dialCode,
-      orElse: () => allCountries.first,
+    try {
+      if (dialCode.isEmpty) return _getFallbackCountry();
+      
+      // Normalize dial code (ensure it starts with +)
+      String normalizedDialCode = dialCode.startsWith('+') ? dialCode : '+$dialCode';
+      
+      return allCountries.firstWhere(
+        (country) => country.dialCode == normalizedDialCode,
+        orElse: () => _getFallbackCountry(),
+      );
+    } catch (e) {
+      return _getFallbackCountry();
+    }
+  }
+
+  static Country _getFallbackCountry() {
+    return Country(
+      name: 'United States',
+      code: 'US',
+      dialCode: '+1',
+      flagEmoji: '🇺🇸',
     );
+  }
+
+  static List<Country> searchCountries(String query) {
+    try {
+      if (query.isEmpty) return allCountries;
+      
+      final lowercaseQuery = query.toLowerCase();
+      return allCountries.where((country) {
+        return country.name.toLowerCase().contains(lowercaseQuery) ||
+               country.code.toLowerCase().contains(lowercaseQuery) ||
+               country.dialCode.contains(query);
+      }).toList();
+    } catch (e) {
+      return allCountries;
+    }
+  }
+
+  static List<Country> getPopularCountries() {
+    try {
+      final popularCodes = ['US', 'GB', 'CA', 'AU', 'DE', 'FR', 'IN', 'CN', 'JP', 'BR'];
+      final popular = <Country>[];
+      
+      for (String code in popularCodes) {
+        try {
+          final country = getCountryByCode(code);
+          if (country.code != _getFallbackCountry().code || code == 'US') {
+            popular.add(country);
+          }
+        } catch (e) {
+          continue;
+        }
+      }
+      
+      return popular.isNotEmpty ? popular : allCountries.take(10).toList();
+    } catch (e) {
+      return allCountries.take(10).toList();
+    }
   }
 }

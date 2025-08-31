@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'dart:async';
 import 'country.dart';
 import 'countries_data.dart';
 import 'phone_number_formatter.dart';
@@ -9,28 +11,86 @@ class PhoneNumberController extends ChangeNotifier {
   final PhoneNumberFormatter formatter = PhoneNumberFormatter();
 
   PhoneNumberController({Country? initialCountry})
-    : _selectedCountry = initialCountry ?? CountriesData.allCountries.first;
+    : _selectedCountry = initialCountry ?? _getFallbackCountry();
 
   Country get selectedCountry => _selectedCountry;
 
+  static Country _getFallbackCountry() {
+    try {
+      return CountriesData.allCountries.isNotEmpty 
+          ? CountriesData.allCountries.first
+          : Country(
+              name: 'United States',
+              code: 'US',
+              dialCode: '+1',
+              flagEmoji: '🇺🇸',
+            );
+    } catch (e) {
+      // Fallback to US if countries data fails
+      return Country(
+        name: 'United States',
+        code: 'US',
+        dialCode: '+1',
+        flagEmoji: '🇺🇸',
+      );
+    }
+  }
+
   void setCountry(Country country) {
-    _selectedCountry = country;
-    notifyListeners();
+    try {
+      _selectedCountry = country;
+      notifyListeners();
+    } catch (e) {
+      // Handle notification errors gracefully
+      debugPrint('Error setting country: $e');
+    }
   }
 
   String get completeNumber {
-    return '${_selectedCountry.dialCode}${numberController.text.replaceAll(RegExp(r'[^\d]'), '')}';
+    try {
+      final cleanNumber = numberController.text.replaceAll(RegExp(r'[^\d]'), '');
+      return '${_selectedCountry.dialCode}$cleanNumber';
+    } catch (e) {
+      debugPrint('Error getting complete number: $e');
+      return _selectedCountry.dialCode;
+    }
+  }
+
+  String get formattedNumber {
+    try {
+      return formatter.format(numberController.text, _selectedCountry.code);
+    } catch (e) {
+      debugPrint('Error formatting number: $e');
+      return numberController.text;
+    }
   }
 
   bool isValid() {
-    final cleanNumber = numberController.text.replaceAll(RegExp(r'[^\d]'), '');
+    try {
+      final cleanNumber = numberController.text.replaceAll(RegExp(r'[^\d]'), '');
 
-    // Basic validation - add more complex validation as needed
-    if (cleanNumber.isEmpty) return false;
+      // Basic validation
+      if (cleanNumber.isEmpty) return false;
+      
+      // Additional validation checks
+      if (cleanNumber.length > 15) return false; // International standard max length
+      if (cleanNumber.startsWith('0') && cleanNumber.length > 1) {
+        // Some countries don't allow leading zeros in mobile numbers
+        final withoutLeadingZero = cleanNumber.substring(1);
+        return _validateByCountry(withoutLeadingZero);
+      }
+      
+      return _validateByCountry(cleanNumber);
+    } catch (e) {
+      debugPrint('Validation error: $e');
+      return false;
+    }
+  }
 
-    // Length validation based on country
-    // Length validation based on country
-    switch (_selectedCountry.code) {
+  bool _validateByCountry(String cleanNumber) {
+    try {
+      // Length validation based on country
+      switch (_selectedCountry.code) {
       case 'AF': // Afghanistan
         return cleanNumber.length == 9;
       case 'AL': // Albania
@@ -181,8 +241,8 @@ class PhoneNumberController extends ChangeNotifier {
         return cleanNumber.length == 9;
       case 'IS': // Iceland
         return cleanNumber.length == 7;
-      // case 'IN': // India
-      //   return cleanNumber.length == 10;
+      case 'IN': // India
+        return cleanNumber.length == 10;
       case 'ID': // Indonesia
         return cleanNumber.length >= 9 && cleanNumber.length <= 12;
       case 'IR': // Iran
@@ -191,8 +251,8 @@ class PhoneNumberController extends ChangeNotifier {
         return cleanNumber.length == 10;
       case 'IE': // Ireland
         return cleanNumber.length == 9;
-      // case 'IL': // Israel
-      //   return cleanNumber.length == 9;
+      case 'IL': // Israel
+        return cleanNumber.length == 9;
       case 'IT': // Italy
         return cleanNumber.length == 10;
       case 'JM': // Jamaica
@@ -422,25 +482,55 @@ class PhoneNumberController extends ChangeNotifier {
       default:
         return cleanNumber.length >= 5; // Generic fallback
     }
+    } catch (e) {
+      debugPrint('Country validation error: $e');
+      return cleanNumber.length >= 5; // Fallback validation
+    }
   }
 
   void formatPhoneNumber() {
-    final text = numberController.text;
-    final selection = numberController.selection;
+    try {
+      final text = numberController.text;
+      final selection = numberController.selection;
 
-    final formattedText = formatter.format(text, _selectedCountry.code);
+      final formattedText = formatter.format(text, _selectedCountry.code);
 
-    // Keep cursor position
-    final difference = formattedText.length - text.length;
+      // Prevent infinite loops by checking if formatting changed anything
+      if (formattedText == text) return;
 
-    numberController.text = formattedText;
+      // Keep cursor position
+      final difference = formattedText.length - text.length;
 
-    if (selection.baseOffset > -1) {
-      numberController.selection = TextSelection.collapsed(
-        offset: selection.baseOffset + difference,
-      );
+      numberController.text = formattedText;
+
+      // Safely update cursor position
+      if (selection.baseOffset > -1) {
+        final newOffset = (selection.baseOffset + difference)
+            .clamp(0, formattedText.length);
+        numberController.selection = TextSelection.collapsed(offset: newOffset);
+      }
+    } catch (e) {
+      debugPrint('Phone formatting error: $e');
+      // Don't format if there's an error to prevent crashes
     }
   }
+
+  // Additional utility methods
+  void clearNumber() {
+    numberController.clear();
+    notifyListeners();
+  }
+
+  void setPhoneNumber(String phoneNumber) {
+    try {
+      numberController.text = phoneNumber;
+      formatPhoneNumber();
+    } catch (e) {
+      debugPrint('Error setting phone number: $e');
+    }
+  }
+
+  bool get isEmpty => numberController.text.trim().isEmpty;
 
   @override
   void dispose() {

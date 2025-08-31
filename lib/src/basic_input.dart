@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:async';
 import 'country.dart';
 import 'countries_data.dart';
 import 'phone_number_controller.dart';
@@ -32,6 +33,8 @@ class BasicPhoneInput extends StatefulWidget {
 
 class _BasicPhoneInputState extends State<BasicPhoneInput> {
   late final PhoneNumberController _controller;
+  Timer? _debounceTimer;
+  bool _isValidating = false;
 
   @override
   void initState() {
@@ -42,16 +45,33 @@ class _BasicPhoneInputState extends State<BasicPhoneInput> {
   }
 
   void _onControllerChanged() {
-    setState(() {}); // Rebuild when controller changes
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _onTextChanged() {
-    final isValid = _controller.isValid();
-    widget.onNumberChanged?.call(_controller.numberController.text);
-    widget.onValidationChanged?.call(isValid);
+    // Debounce formatting to prevent unresponsiveness
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () {
+      if (mounted && !_isValidating) {
+        _isValidating = true;
+        
+        try {
+          final isValid = _controller.isValid();
+          widget.onNumberChanged?.call(_controller.numberController.text);
+          widget.onValidationChanged?.call(isValid);
 
-    // Auto-format as the user types
-    _controller.formatPhoneNumber();
+          // Auto-format as the user types
+          _controller.formatPhoneNumber();
+        } catch (e) {
+          // Handle formatting errors gracefully
+          debugPrint('Phone formatting error: $e');
+        } finally {
+          _isValidating = false;
+        }
+      }
+    });
   }
 
   void _showCountriesDialog() async {
@@ -135,6 +155,7 @@ class _BasicPhoneInputState extends State<BasicPhoneInput> {
 
   @override
   void dispose() {
+    _debounceTimer?.cancel();
     _controller.removeListener(_onControllerChanged);
     _controller.numberController.removeListener(_onTextChanged);
     super.dispose();
