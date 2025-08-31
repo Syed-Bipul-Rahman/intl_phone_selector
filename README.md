@@ -26,11 +26,12 @@ A highly customizable international phone number selector for Flutter applicatio
 
 ## Screenshots
 
-<div style="display: flex; gap: 20px;">
-  <img src="screenshots/basic_implementation.png" alt="Basic Implementation" style="width: 250px; height: auto;">
-  <img src="screenshots/country_picker.png" alt="Country Picker" style="width: 250px; height: auto;">
-  <img src="screenshots/custom_implementation.png" alt="Custom Implementation" style="width: 250px; height: auto;">
-</div>
+| Main Page | Basic Example | Advanced Example | Country Picker |
+|-----------|---------------|------------------|----------------|
+| <img src="https://raw.githubusercontent.com/Syed-Bipul-Rahman/intl_phone_selector/main/screenshots/main_page.png" alt="Main Page" width="200"> | <img src="https://raw.githubusercontent.com/Syed-Bipul-Rahman/intl_phone_selector/main/screenshots/basic_example.png" alt="Basic Example" width="200"> | <img src="https://raw.githubusercontent.com/Syed-Bipul-Rahman/intl_phone_selector/main/screenshots/advanced_example.png" alt="Advanced Example" width="200"> | <img src="https://raw.githubusercontent.com/Syed-Bipul-Rahman/intl_phone_selector/main/screenshots/country_picker_modal.png" alt="Country Picker Modal" width="200"> |
+
+**Intermediate Example:**
+<img src="https://raw.githubusercontent.com/Syed-Bipul-Rahman/intl_phone_selector/main/screenshots/intermediet_example.png" alt="Intermediate Example" width="250">
 
 ## 📦 Installation
 
@@ -38,7 +39,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  intl_phone_selector: ^0.1.0
+  intl_phone_selector: ^1.0.1
 ```
 
 Then run:
@@ -107,6 +108,10 @@ class _PhoneInputExampleState extends State<PhoneInputExample> {
   }
 }
 ```
+
+**Output:**
+
+<img src="https://raw.githubusercontent.com/Syed-Bipul-Rahman/intl_phone_selector/main/screenshots/basic_example.png" alt="Basic Example" width="250">
 
 ### 2️⃣ Advanced Implementation (For Experienced Developers)
 
@@ -177,6 +182,10 @@ class _AdvancedPhoneExampleState extends State<AdvancedPhoneExample> {
 }
 ```
 
+**Output:**
+
+<img src="https://raw.githubusercontent.com/Syed-Bipul-Rahman/intl_phone_selector/main/screenshots/advanced_example.png" alt="Advanced Example" width="250">
+
 ### 3️⃣ Custom Implementation (Complete Control)
 
 For complete UI control, you can build custom interfaces while using the core functionality:
@@ -238,6 +247,10 @@ Widget _buildCustomPhoneInput() {
   );
 }
 ```
+
+**Output:**
+
+<img src="https://raw.githubusercontent.com/Syed-Bipul-Rahman/intl_phone_selector/main/screenshots/intermediet_example.png" alt="Intermediate Example" width="250">
 
 ## 📚 API Reference
 
@@ -684,4 +697,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Country data sourced from international telecommunications standards
 - Flag emojis provided by Unicode Consortium
-- Special thanks to the Flutter community for feedback and suggestions
