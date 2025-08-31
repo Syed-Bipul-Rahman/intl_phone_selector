@@ -40,19 +40,29 @@ class _AdvancedExampleState extends State<AdvancedExample>
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     
-    // Initialize controllers with smart defaults
+    // Initialize controllers with default country (will be updated in didChangeDependencies)
     _primaryController = PhoneNumberController(
-      initialCountry: _getUserCountryFromLocale(),
+      initialCountry: CountriesData.getCountryByCode('US'),
     );
     _secondaryController = PhoneNumberController(
-      initialCountry: _getUserCountryFromLocale(),
+      initialCountry: CountriesData.getCountryByCode('US'),
     );
     _businessController = PhoneNumberController(
-      initialCountry: _getUserCountryFromLocale(),
+      initialCountry: CountriesData.getCountryByCode('US'),
     );
     
     _setupPreferredCountries();
     _setupControllerListeners();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Update controllers with user's locale-based country
+    final userCountry = _getUserCountryFromLocale();
+    _primaryController.setCountry(userCountry);
+    _secondaryController.setCountry(userCountry);
+    _businessController.setCountry(userCountry);
   }
 
   @override
