@@ -5,6 +5,37 @@ All notable changes to the `intl_phone_selector` package will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-08-31
+
+### 🔖 Version Update & Documentation Enhancement
+
+### Changed
+- Updated package version from 0.1.0 to 1.0.1
+- Enhanced README.md with proper GitHub raw URLs for pub.dev image display
+- Updated dependency version reference to ^1.0.1 in documentation
+- Reorganized screenshots with table format for better presentation
+
+### Added
+- New screenshots for better documentation:
+  - `main_page.png` - Main application interface
+  - `basic_example.png` - Basic implementation example
+  - `advanced_example.png` - Advanced implementation example  
+  - `intermediet_example.png` - Intermediate implementation example
+  - `country_picker_modal.png` - Country picker modal interface
+- Screenshot outputs below each code example for enhanced documentation
+- Proper absolute GitHub URLs for pub.dev compatibility
+
+### Removed
+- Outdated screenshots:
+  - `basic_implementation.png`
+  - `country_picker.png` 
+  - `custom_implementation.png`
+
+### Fixed
+- Fixed pub.dev image display issue by using GitHub raw URLs instead of relative paths
+- Corrected image references for proper pub.dev rendering
+- Improved code analysis warnings (removed unused imports, unnecessary library name)
+
 ## [0.1.0] - 2024-08-31
 
 ### 🎉 Major Update - Enhanced Package with Advanced Features

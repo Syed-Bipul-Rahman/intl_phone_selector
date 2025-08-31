@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'dart:async';
 import 'country.dart';
 import 'countries_data.dart';
 import 'phone_number_formatter.dart';

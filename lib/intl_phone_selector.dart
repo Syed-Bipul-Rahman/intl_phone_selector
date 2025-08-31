@@ -1,5 +1,3 @@
-library intl_phone_selector;
-
 export 'src/phone_number_controller.dart';
 export 'src/country.dart';
 export 'src/phone_number_formatter.dart';
